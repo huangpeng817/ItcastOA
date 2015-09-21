@@ -23,7 +23,7 @@
 	<property name="hbm2ddl.auto">update</property>
 
 	<!-- 3，导入映射文件 -->
-	<!-- <mapping resource="cn/itcast/oa/domain/User.hbm.xml" /> -->
+	<mapping resource="cn/itcast/oa/domain/User.hbm.xml" />
 
 
 </session-factory>

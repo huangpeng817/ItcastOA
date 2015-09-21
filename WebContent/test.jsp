@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	测试Struts2
+	测试Struts2和Spring整合成功
 </body>
 </html>

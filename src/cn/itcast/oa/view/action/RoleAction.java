@@ -20,13 +20,15 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 
 	@Resource
 	RoleService roleService;
-	private Long id; // Struts2的Action是使用成员变量接收参数（有getter和setter方法）
-	private String name;
-	private String description;
+//	private Long id; // Struts2的Action是使用成员变量接收参数（有getter和setter方法）
+//	private String name;
+//	private String description;
+	
+	private Role model = new Role();
 	
 	@Override
 	public Role getModel() {
-		return null;
+		return model;
 	}
 
 	public String list() throws Exception {
@@ -36,7 +38,7 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 	}
 	public String delete() throws Exception {
 		System.out.println("RoleAction.delete()");
-		roleService.delete(id);
+		roleService.delete(model.getId());
 		return "toList";
 	}
 	public String addUI() throws Exception {
@@ -44,42 +46,42 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 	}
 	public String add() throws Exception {
 		Role role = new Role();
-		role.setName(name);
-		role.setDescription(description);
+		role.setName(model.getName());
+		role.setDescription(model.getDescription());
 		roleService.save(role);
 		return "toList";
 	}
 	public String editUI() throws Exception {
-		Role role = roleService.getById(id);
+		Role role = roleService.getById(model.getId());
 		ActionContext.getContext().getValueStack().push(role); // 将role对象放在值栈的栈顶，然后回显所需数据从栈顶中得到
 //		this.name = role.getName();
 //		this.description = role.getDescription();
 		return "editUI";
 	}
 	public String edit() throws Exception {
-		Role role = roleService.getById(id);
-		role.setName(name);
-		role.setDescription(description);
+		Role role = roleService.getById(model.getId());
+		role.setName(model.getName());
+		role.setDescription(model.getDescription());
 		roleService.update(role);
 		return "toList";
 	}
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
+//	public Long getId() {
+//		return id;
+//	}
+//	public void setId(Long id) {
+//		this.id = id;
+//	}
+//	public String getName() {
+//		return name;
+//	}
+//	public void setName(String name) {
+//		this.name = name;
+//	}
+//	public String getDescription() {
+//		return description;
+//	}
+//	public void setDescription(String description) {
+//		this.description = description;
+//	}
 }

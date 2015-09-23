@@ -45,8 +45,9 @@ public class RoleAction extends ActionSupport {
 	}
 	public String editUI() throws Exception {
 		Role role = roleService.getById(id);
-		this.name = role.getName();
-		this.description = role.getDescription();
+		ActionContext.getContext().getValueStack().push(role); // 将role对象放在值栈的栈顶，然后回显所需数据从栈顶中得到
+//		this.name = role.getName();
+//		this.description = role.getDescription();
 		return "editUI";
 	}
 	public String edit() throws Exception {

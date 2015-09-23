@@ -23,6 +23,14 @@
       	<result name="saveUI">/WEB-INF/jsp/roleAction/saveUI.jsp</result>
       	<result name="toList" type="redirectAction">role_list</result>
       </action>
+      
+      <!-- 岗位管理 -->
+      <action name="department_*" class="departmentAction" method="{1}">
+      	<result name="list">/WEB-INF/jsp/departmentAction/list.jsp</result>
+      	<result name="saveUI">/WEB-INF/jsp/departmentAction/saveUI.jsp</result>
+      	<result name="toList" type="redirectAction">department_list</result>
+      </action>
+      
     </package>
 
     <!-- Add packages here -->

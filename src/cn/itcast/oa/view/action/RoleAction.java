@@ -9,13 +9,14 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 
 import cn.itcast.oa.domain.Role;
 import cn.itcast.oa.service.RoleService;
 
 @Controller
 @Scope("prototype")
-public class RoleAction extends ActionSupport {
+public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 
 	@Resource
 	RoleService roleService;
@@ -23,6 +24,11 @@ public class RoleAction extends ActionSupport {
 	private String name;
 	private String description;
 	
+	@Override
+	public Role getModel() {
+		return null;
+	}
+
 	public String list() throws Exception {
 		List<Role> roleList = roleService.findAll();
 		ActionContext.getContext().put("roleList", roleList);

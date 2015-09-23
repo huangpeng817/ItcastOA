@@ -21,11 +21,11 @@
 			</tr>
 		</thead>
 		<tbody>
-		<s:iterator value="%{roleList}">
+		<s:iterator value="%{#roleList}">
 			<tr>
-				<td><s:property value="id" /></td>
-				<td><s:property value="name" /></td>
-				<td><s:property value="description" /></td>
+				<td><%-- <s:property value="%{id}" /> --%>${id }</td>
+				<td><%-- <s:property value="%{name}" /> --%>${name }</td>
+				<td><%-- <s:property value="%{description}" /> --%>${description }</td>
 				<td>
 					<s:a action="role_delete?id=%{id}" onclick="return confirm('确定要删除吗？')">删除</s:a>&nbsp;
 					<s:a action="role_editUI?id=%{id}">修改</s:a>

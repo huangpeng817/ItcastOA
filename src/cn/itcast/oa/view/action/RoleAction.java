@@ -42,7 +42,7 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 		return "toList";
 	}
 	public String addUI() throws Exception {
-		return "addUI";
+		return "saveUI";
 	}
 	public String add() throws Exception {
 //		Role role = new Role();
@@ -57,7 +57,7 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 		ActionContext.getContext().getValueStack().push(role); // 将role对象放在值栈的栈顶，然后回显所需数据从栈顶中得到
 //		this.name = role.getName();
 //		this.description = role.getDescription();
-		return "editUI";
+		return "saveUI";
 	}
 	public String edit() throws Exception {
 		Role role = roleService.getById(model.getId());

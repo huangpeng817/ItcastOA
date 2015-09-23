@@ -45,10 +45,11 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 		return "addUI";
 	}
 	public String add() throws Exception {
-		Role role = new Role();
-		role.setName(model.getName());
-		role.setDescription(model.getDescription());
-		roleService.save(role);
+//		Role role = new Role();
+//		role.setName(model.getName());
+//		role.setDescription(model.getDescription());
+//		roleService.save(role);
+		roleService.save(model); // model中已经包含了name和description两个属性，不用新的role传递值多此一举
 		return "toList";
 	}
 	public String editUI() throws Exception {

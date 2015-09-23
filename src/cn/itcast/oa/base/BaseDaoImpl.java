@@ -54,9 +54,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
 	@Override
 	public T getById(Long id) {
-		// getSession().get((Class) type, id);
-		getSession().get(clazz, id);
-		return null;
+		return (T) getSession().get(clazz, id);
 	}
 
 	@SuppressWarnings("unchecked")

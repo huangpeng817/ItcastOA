@@ -1,10 +1,18 @@
 package cn.itcast.oa.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Department {
 
-	private Long id;
+	private Long id; 
+	private Set<User> users = new HashSet<User>();
+	private Department parent;
+	private Set<Department> children = new HashSet<Department>();
+	
 	private String name;
 	private String description;
+	
 	public Long getId() {
 		return id;
 	}
@@ -22,5 +30,23 @@ public class Department {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public Department getParent() {
+		return parent;
+	}
+	public void setParent(Department parent) {
+		this.parent = parent;
+	}
+	public Set<User> getUsers() {
+		return users;
+	}
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+	public Set<Department> getChildren() {
+		return children;
+	}
+	public void setChildren(Set<Department> children) {
+		this.children = children;
 	}
 }

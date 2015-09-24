@@ -11,6 +11,13 @@
 		</id>
 		<property name="name" />
 		<property name="description" />
+		
+		<!-- users属性，本类与User多对多的关系 -->
+		<set name="users" table="itcast_user_role">
+			<key column="roleId"></key>
+			<many-to-many class="User" column="userId"></many-to-many>
+		</set>
+		
 	</class>
 	
 </hibernate-mapping>

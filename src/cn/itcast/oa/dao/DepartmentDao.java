@@ -1,10 +1,10 @@
-package cn.itcast.oa.service;
+package cn.itcast.oa.dao;
 
 import java.util.List;
 
 import cn.itcast.oa.domain.Department;
 
-public interface DepartmentService {
+public interface DepartmentDao {
 
 	List<Department> findAll();
 

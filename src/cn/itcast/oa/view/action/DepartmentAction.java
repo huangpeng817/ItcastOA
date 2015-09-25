@@ -21,6 +21,8 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 	@Resource
 	DepartmentService departmentService;
 	
+	private Long parentId;
+	
 	private Department model = new Department(); // 实现ModelDriven接口的model对象封装了请求参数
 	
 	@Override
@@ -29,7 +31,14 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 	}
 	
 	public String list() throws Exception {
-		List<Department> departmentList = departmentService.findAll();
+		List<Department> departmentList = null;
+		
+		if (parentId == null) { // 顶级部门列表
+			departmentList = departmentService.findTopList();
+		} else { // 子部门列表
+			departmentList = departmentService.findChildren(parentId);
+		}
+		
 		ActionContext.getContext().put("departmentList", departmentList);
 		return "list";
 	}
@@ -40,17 +49,32 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 	}
 	
 	public String addUI() throws Exception {
+		List<Department> departmentList = departmentService.findAll();
+		ActionContext.getContext().put("departmentList", departmentList);
 		return "saveUI";
 	}
 	
 	public String add() throws Exception {
+		Department parent = departmentService.getById(parentId);
+		model.setParent(parent);
 		departmentService.save(model);
 		return "toList";
 	}
 	
 	public String editUI() throws Exception {
+		// 准备departmentList数据（下拉列表）
+		List<Department> departmentList = departmentService.findAll();
+		ActionContext.getContext().put("departmentList", departmentList);
+		
+		// 准备回显部门的基本信息
 		Department department = departmentService.getById(model.getId());
 		ActionContext.getContext().getValueStack().push(department); // 将要修改的对象放在栈顶，自动找到属性回显
+		
+		// 回显parentId数据
+		if (department.getParent() != null) {
+			parentId = department.getParent().getId();
+		}
+		
 		return "saveUI";
 	}
 	
@@ -58,8 +82,18 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 		Department department = departmentService.getById(model.getId());
 		department.setName(model.getName());
 		department.setDescription(model.getDescription());
+		Department parent = departmentService.getById(parentId);
+		department.setParent(parent);
 		departmentService.update(department);
 		return "toList";
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 }

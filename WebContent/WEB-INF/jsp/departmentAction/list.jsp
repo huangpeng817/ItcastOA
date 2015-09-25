@@ -55,7 +55,7 @@
 						<td><s:a action="department_list?parentId=%{id}">${name }&nbsp;</s:a>&nbsp;</td>
 						<td>${parent.name }&nbsp;</td>
 						<td>${description }&nbsp;</td>
-						<td><s:a action="department_delete?id=%{id}"
+						<td><s:a action="department_delete?id=%{id}&parentId=%{parentId}"
 							onclick="return window.confirm('这将删除所有的下级部门，您确定要删除吗？')">删除</s:a>
 							<s:a action="department_editUI?id=%{id}">修改</s:a></td>
 					</tr>
@@ -66,8 +66,9 @@
 		<!-- 其他功能超链接 -->
 		<div id="TableTail">
 			<div id="TableTail_inside">
-				<s:a action="department_addUI"><img
+				<s:a action="department_addUI?parentId=%{parentId}"><img
 					src="${pageContext.request.contextPath }/style/images/createNew.png"></s:a>
+				<s:a action="department_list?parentId=%{#parent.parent.id}">返回到上一级</s:a>
 			</div> 	
 		</div>
 	</div>

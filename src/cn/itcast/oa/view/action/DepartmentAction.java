@@ -36,6 +36,10 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 		if (parentId == null) { // 顶级部门列表
 			departmentList = departmentService.findTopList();
 		} else { // 子部门列表
+			// 保存准备返回到上一级的parent数据（OGNL访问#parent.parent.id）
+			Department parent = departmentService.getById(parentId);
+			ActionContext.getContext().put("parent", parent);
+			
 			departmentList = departmentService.findChildren(parentId);
 		}
 		

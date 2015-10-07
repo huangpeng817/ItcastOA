@@ -11,25 +11,14 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
+import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Role;
 import cn.itcast.oa.service.RoleService;
 
+@SuppressWarnings("serial")
 @Controller
 @Scope("prototype")
-public class RoleAction extends ActionSupport implements ModelDriven<Role> {
-
-	@Resource
-	RoleService roleService;
-//	private Long id; // Struts2的Action是使用成员变量接收参数（有getter和setter方法）
-//	private String name;
-//	private String description;
-	
-	private Role model = new Role();
-	
-	@Override
-	public Role getModel() {
-		return model;
-	}
+public class RoleAction extends BaseAction<Role> {
 
 	public String list() throws Exception {
 		List<Role> roleList = roleService.findAll();
@@ -66,23 +55,4 @@ public class RoleAction extends ActionSupport implements ModelDriven<Role> {
 		roleService.update(role);
 		return "toList";
 	}
-	
-//	public Long getId() {
-//		return id;
-//	}
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
-//	public String getName() {
-//		return name;
-//	}
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-//	public String getDescription() {
-//		return description;
-//	}
-//	public void setDescription(String description) {
-//		this.description = description;
-//	}
 }

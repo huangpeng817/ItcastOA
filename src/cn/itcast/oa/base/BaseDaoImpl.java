@@ -24,7 +24,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		// this.type = pt.getActualTypeArguments()[0];
 		this.clazz = (Class<T>) pt.getActualTypeArguments()[0]; 
 		// System.out.println("当前的clazz：\t" + type);
-		System.out.println("当前的clazz：\t" + clazz);
+		System.out.println("BaseDaoImpl.BaseDaoImpl().clazz：\t" + clazz);
 	}
 
 	/*

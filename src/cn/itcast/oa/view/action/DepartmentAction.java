@@ -11,25 +11,16 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
+import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Department;
 import cn.itcast.oa.service.DepartmentService;
 import cn.itcast.oa.util.DepartmentUtils;
 
 @Controller
 @Scope("prototype")
-public class DepartmentAction extends ActionSupport implements ModelDriven<Department> {
+public class DepartmentAction extends BaseAction<Department> {
 
-	@Resource
-	DepartmentService departmentService;
-	
 	private Long parentId;
-	
-	private Department model = new Department(); // 实现ModelDriven接口的model对象封装了请求参数
-	
-	@Override
-	public Department getModel() {
-		return model;
-	}
 	
 	public String list() throws Exception {
 		List<Department> departmentList = null;

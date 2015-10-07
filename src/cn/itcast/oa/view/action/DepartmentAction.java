@@ -13,6 +13,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import cn.itcast.oa.domain.Department;
 import cn.itcast.oa.service.DepartmentService;
+import cn.itcast.oa.util.DepartmentUtils;
 
 @Controller
 @Scope("prototype")
@@ -53,7 +54,8 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 	}
 	
 	public String addUI() throws Exception {
-		List<Department> departmentList = departmentService.findAll();
+		List<Department> topList = departmentService.findTopList();
+		List<Department> departmentList = DepartmentUtils.getAllDepartments(topList);
 		ActionContext.getContext().put("departmentList", departmentList);
 		return "saveUI";
 	}
@@ -67,7 +69,8 @@ public class DepartmentAction extends ActionSupport implements ModelDriven<Depar
 	
 	public String editUI() throws Exception {
 		// 准备departmentList数据（下拉列表）
-		List<Department> departmentList = departmentService.findAll();
+		List<Department> topList = departmentService.findTopList();
+		List<Department> departmentList = DepartmentUtils.getAllDepartments(topList);
 		ActionContext.getContext().put("departmentList", departmentList);
 		
 		// 准备回显部门的基本信息

@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class BaseDaoImpl<T> implements BaseDao<T> {
+public class DaoSupportImpl<T> implements DaoSupport<T> {
 
 	@Resource
 	private SessionFactory sessionFactory;
@@ -17,14 +17,14 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	// private Type type;
 
 	@SuppressWarnings("unchecked")
-	public BaseDaoImpl() {
+	public DaoSupportImpl() {
 		// 获取当前new的对象的 泛型的父类 类型
 		ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
 		// 获取第一个类型参数的真实类型,其实就是代表<T>泛型参数有且只有一个，如果是Map<K,V>就是参数数组(两个值)
 		// this.type = pt.getActualTypeArguments()[0];
 		this.clazz = (Class<T>) pt.getActualTypeArguments()[0]; 
 		// System.out.println("当前的clazz：\t" + type);
-		System.out.println("BaseDaoImpl.BaseDaoImpl().clazz：\t" + clazz);
+		System.out.println("DaoSupportImpl.DaoSupportImpl().clazz：\t" + clazz);
 	}
 
 	/*

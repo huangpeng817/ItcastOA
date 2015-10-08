@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+//添加对删改的事务处理，让session处于事物的管理下
 @Transactional
 public abstract class DaoSupportImpl<T> implements DaoSupport<T> {
 

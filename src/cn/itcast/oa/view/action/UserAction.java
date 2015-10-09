@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -47,7 +48,8 @@ public class UserAction extends BaseAction<User> {
 //		model.setRoles(new HashSet<Role>(roleService.getByIds(roleIds)));
 		List<Role> roleList = roleService.getByIds(roleIds);
 		model.setRoles(new HashSet<Role>(roleList));
-		model.setPassword("1234");
+		String md5Digest = DigestUtils.md5Hex("1234");
+		model.setPassword(md5Digest);
 		userService.save(model);
 		return "toList";
 	}
@@ -61,7 +63,8 @@ public class UserAction extends BaseAction<User> {
 		user.setGender(model.getGender());
 		user.setLoginName(model.getLoginName());
 		user.setName(model.getName());
-		user.setPassword("1234");
+		String md5Digest = DigestUtils.md5Hex("1234");
+		user.setPassword(md5Digest);
 		user.setPhoneNumber(model.getPhoneNumber());
 		List<Role> roleList = roleService.getByIds(roleIds);
 		
@@ -104,7 +107,8 @@ public class UserAction extends BaseAction<User> {
 	}
 	public String initPassword() throws Exception {
 		User user = userService.getById(model.getId());
-		user.setPassword("1234");
+		String md5Digest = DigestUtils.md5Hex("1234");
+		user.setPassword(md5Digest);
 		userService.update(user);
 		return "toList";
 	}

@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.ModelDriven;
 
 import cn.itcast.oa.service.DepartmentService;
 import cn.itcast.oa.service.RoleService;
+import cn.itcast.oa.service.UserService;
 
 @SuppressWarnings("serial")
 public abstract class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
@@ -41,4 +42,6 @@ public abstract class BaseAction<T> extends ActionSupport implements ModelDriven
 	protected DepartmentService departmentService;
 	@Resource
 	protected RoleService roleService;
+	@Resource
+	protected UserService userService;
 }

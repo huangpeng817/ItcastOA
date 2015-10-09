@@ -26,7 +26,7 @@ public class UserAction extends BaseAction<User> {
 	public String list() throws Exception {
 		List<User> userList = userService.findAll();
 		ActionContext.getContext().put("userList", userList);
-		return "list";
+		return "list"; 
 	}
 	public String delete() throws Exception {
 		userService.delete(model.getId());

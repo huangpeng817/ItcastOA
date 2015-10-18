@@ -15,7 +15,7 @@ public class SpringTest {
 	}
 	
 	@Test
-	public void testSession() throws Exception {
+	public void testSessionFactory() throws Exception {
 		SessionFactory sessionFactory = (SessionFactory) ac.getBean("sessionFactory");
 		System.out.println(sessionFactory);
 	}

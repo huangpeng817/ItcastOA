@@ -2,6 +2,7 @@ package cn.itcast.oa.view.action;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -111,6 +112,25 @@ public class UserAction extends BaseAction<User> {
 		user.setPassword(md5Digest);
 		userService.update(user);
 		return "toList";
+	}
+	
+	public String loginUI() throws Exception {
+		return "loginUI";
+	}
+	public String login() throws Exception {
+		String md5Digest = DigestUtils.md5Hex(model.getPassword());
+		User user = userService.findByLoginNameAndPassword(model.getLoginName(), md5Digest);
+		if (user == null) {
+			addFieldError("login", "用户名或者密码不正确！");
+			return "loginUI";
+		} else {
+			ActionContext.getContext().getSession().put("user", user);
+			return "toIndex";
+		}
+	}
+	public String logout() throws Exception {
+		ActionContext.getContext().getSession().remove("user");
+		return "logout";
 	}
 	
 	// --- getters and setters

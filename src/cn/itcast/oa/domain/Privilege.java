@@ -12,6 +12,18 @@ public class Privilege {
 	private Privilege parent;
 	private Set<Privilege> children = new HashSet<Privilege>();
 	
+	public Privilege() {
+		
+	}
+	
+	public Privilege(String name, String url, Privilege parent) {
+		super();
+		this.name = name;
+		this.url = url;
+		this.parent = parent;
+	}
+
+
 	public Long getId() {
 		return id;
 	}

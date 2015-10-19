@@ -15,6 +15,34 @@ public class User {
 	private String phoneNumber;
 	private String email;
 	private String description;
+	
+	/**
+	 * 判断本用户是否有指定名称的权限
+	 * @param name
+	 * @return
+	 */
+	public boolean hasPrivilegeByName(String name) {
+		if (isAdmin()) {
+			return true;
+		}
+		for (Role role : roles) {
+			for (Privilege priv : role.getPrivileges()) {
+				if (priv.getName().equals(name)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 判断是否为超级管理员用户
+	 * @return
+	 */
+	private boolean isAdmin() {
+		return "admin".equals(loginName);
+	}
+
 	public Long getId() {
 		return id;
 	}

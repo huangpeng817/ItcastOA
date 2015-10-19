@@ -12,7 +12,7 @@ import cn.itcast.oa.service.PrivilegeService;
 @Service
 @Transactional
 @SuppressWarnings("unchecked")
-public class PrivilegeServiceImpl extends DaoSupportImpl<Privilege>implements PrivilegeService {
+public class PrivilegeServiceImpl extends DaoSupportImpl<Privilege> implements PrivilegeService {
 
 	@Override
 	public List<Privilege> findTopList() {

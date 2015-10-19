@@ -87,7 +87,19 @@
 						<tr class="TableDetail1">
 							<!-- 显示权限树 -->
 							<td>
-								<s:checkboxlist name="privilegeIds" list="#privilegeList" listKey="id" listValue="name"></s:checkboxlist>
+								<!-- 方式一：简便，自带回显功能，不好控制样式 -->
+								<%-- <s:checkboxlist name="privilegeIds" list="#privilegeList" listKey="id" listValue="name"></s:checkboxlist> --%>
+								<!-- 方式二：原生写法，自己写回显功能，好控制换行 -->
+								<s:iterator value="#privilegeList">
+									<input type="checkbox" name="privilegeIds" value="${id }" id="cb_${id}"
+									<s:if test="%{id in privilegeIds }">checked</s:if> 
+									><label for="cb_${id}">${name }</label>
+									<br>
+									<!-- 方式三：和方式二相似 -->
+<%-- 									<input type="checkbox" name="privilegeIds" value="${id }" 
+										<s:property value="%{id in privilegeIds ? 'checked' : ''}"/>
+									>${name }<br> --%>
+								</s:iterator>
 							</td>
 						</tr>
 					</tbody>

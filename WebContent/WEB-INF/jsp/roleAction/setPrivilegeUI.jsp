@@ -9,41 +9,20 @@
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath }/script/jquery_treeview/jquery.treeview.css">
 
 	<script type="text/javascript">
- 		// 选择所有
-    	function selectAll(checkedValue){
-    		$("input[type=checkbox][name=resourceIdList]").attr("checked", checkedValue);
-    	}
-    	
-    	function doChecked( liID, checkedValue ){
-			// 当前点击的checkbox元素所在的li元素
-    		var jLi = $("#" + liID);
-
-    		// 选中所有的直属下级。（children()方法是筛选下一级，find()是筛选所有后代）
-    		jLi.children("ul").find("input[type=checkbox]").attr("checked", checkedValue);
-    		
-    		// 选中或取消选中直属上级
-    		if( checkedValue ){ // checkedValue是boolean型，表示是否选中了当前复选框
-    			// 如果当前是选中，则选中所有的直属上级
-				jLi.parents("li").children("input[type=checkbox]").attr("checked", checkedValue);
-			}else{
-				// 如果当前是取消选中，并且同级中没有被选中的项，则也取消上级的选中状态
-				var jCheckedSibingCB = jLi.siblings("li").children("input[type=checkbox]:checked");
-				if(jCheckedSibingCB.size() == 0){
-					var jCheckboxInput = jLi.parent("ul").prev("label").prev("input[type=checkbox]");
-					jCheckboxInput.attr("checked", checkedValue);
-					
-					// 递归操作每一层直属上级
-					var jParentLi = jCheckboxInput.parent("li");
-					if(jParentLi.size() > 0){
-						doChecked(jParentLi.attr("id"), checkedValue);
-					}
-				}
-			}
-    	} 
-    	
+ 		
     	$(function(){
-    		$("#tree").treeview();
+    		$("[name=privilegeIds]").click(function() {
+    			//alert(this.type);
+    			/* 当选中或取消一个权限时，也同时选中或取消所有的下级权限 */
+    			$(this).siblings("ul").find("input").attr("checked", this.checked);
+    			/* 当选中一个权限时，也同时选中所有直接上级权限 */
+    			if (this.checked == true) {
+    				$(this).parents("li").children("input").attr("checked", true);
+/*     				$(this).parents("ul").parent().children("input").attr("checked", true); */
+    			}
+    		});
     	});
+    	
     </script>
 </head>
 <body>
@@ -90,16 +69,43 @@
 								<!-- 方式一：简便，自带回显功能，不好控制样式 -->
 								<%-- <s:checkboxlist name="privilegeIds" list="#privilegeList" listKey="id" listValue="name"></s:checkboxlist> --%>
 								<!-- 方式二：原生写法，自己写回显功能，好控制换行 -->
-								<s:iterator value="#privilegeList">
+								<%-- <s:iterator value="#privilegeList">
 									<input type="checkbox" name="privilegeIds" value="${id }" id="cb_${id}"
 									<s:if test="%{id in privilegeIds }">checked</s:if> 
 									><label for="cb_${id}">${name }</label>
 									<br>
 									<!-- 方式三：和方式二相似 -->
-<%-- 									<input type="checkbox" name="privilegeIds" value="${id }" 
+									<input type="checkbox" name="privilegeIds" value="${id }" 
 										<s:property value="%{id in privilegeIds ? 'checked' : ''}"/>
-									>${name }<br> --%>
-								</s:iterator>
+									>${name }<br>
+								</s:iterator> --%>
+								
+								<ul id="tree">
+									<s:iterator value="#application.topPrivilegeList">
+										<li>
+											<input type="checkbox" name="privilegeIds" value="${id }" id="cb_${id}"	<s:if test="%{id in privilegeIds }">checked</s:if> >
+											<label for="cb_${id}"><span class="folder">${name }</span></label>
+											<ul>
+												<s:iterator value="children">
+													<li>
+														<input type="checkbox" name="privilegeIds" value="${id }" id="cb_${id}"	<s:if test="%{id in privilegeIds }">checked</s:if> >
+														<label for="cb_${id}"><span class="folder">${name }</span></label>
+														<ul>
+															<s:iterator value="children">
+																<li>
+																	<input type="checkbox" name="privilegeIds" value="${id }" id="cb_${id}"	<s:if test="%{id in privilegeIds }">checked</s:if> >
+																	<label for="cb_${id}"><span class="folder">${name }</span></label>
+																</li>
+															</s:iterator>
+														</ul>
+													</li>
+												</s:iterator>
+											</ul>
+										</li>
+									</s:iterator>
+								</ul>
+								
+								
 							</td>
 						</tr>
 					</tbody>
@@ -107,6 +113,9 @@
             </div>
         </div>
         
+        <script type="text/javascript">
+			$("#tree").treeview();        
+        </script>
         <!-- 表单操作 -->
         <div id="InputDetailBar">
             <input src="${pageContext.request.contextPath }/style/images/save.png" type="image">

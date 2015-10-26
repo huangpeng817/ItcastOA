@@ -1,7 +1,10 @@
 package cn.itcast.oa.domain;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.opensymphony.xwork2.ActionContext;
 
 public class User {
 
@@ -54,11 +57,17 @@ public class User {
     	if (privUrl.endsWith("UI")) {
 			privUrl = privUrl.substring(0, privUrl.length() - 2);
 		}
-		
-		for (Role role : roles) {
-			for (Privilege priv : role.getPrivileges()) {
-				if (privUrl.equals(priv.getUrl())) {
-					return true;
+		// 如果本URL不需要控制，则登录用户就可以使用
+		Collection<String> allPrivilegeUrls = (Collection<String>) ActionContext.getContext().getApplication().get("allPrivilegeUrls");
+		if (!allPrivilegeUrls.contains(privUrl)) {
+			return true;
+		} else {
+			// 	普通用户要判断是否含有这个权限
+			for (Role role : roles) {
+				for (Privilege priv : role.getPrivileges()) {
+					if (privUrl.equals(priv.getUrl())) {
+						return true;
+					}
 				}
 			}
 		}

@@ -37,7 +37,7 @@ public class User {
 	
 	/**
 	 * 判断本用户是否有指定URL的权限
-	 * @param name
+	 * @param privUrl
 	 * @return
 	 */
 	public boolean hasPrivilegeByUrl(String privUrl) {

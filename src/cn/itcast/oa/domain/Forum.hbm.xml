@@ -12,6 +12,18 @@
 		<property name="name" />
 		<property name="description" />
 		<property name="position" />
+		<property name="topicCount" />
+		<property name="articleCount" />
+		
+		<!-- lastTopic属性，本类与Topic的一对一的关系,采用基于外键的方式，本方有外键 -->
+		<many-to-one name="lastTopic" class="Topic" column="lastTopicId" unique="true"></many-to-one>
+		
+		<!-- topics属性，本类与Topic的一对多的关系 -->
+		<set name="topics">
+			<key column="forumId"></key>
+			<one-to-many class="Topic"/>
+		</set>
+		
 	</class>
 	
 </hibernate-mapping>

@@ -3,6 +3,14 @@
 <html><head>
     <title>版块列表</title>
 	<%@ include file="/WEB-INF/jsp/public/commons.jspf" %>
+
+<style type="text/css">
+	.disabled {
+		color: grey;
+		cursor: pointer;
+	}
+	
+</style>
 </head>
 <body>
 
@@ -30,14 +38,24 @@
 
 		<!--显示数据列表-->
         <tbody id="TableData" class="dataContainer" datakey="forumList">
-		<s:iterator value="#forumList">	
+		<s:iterator value="#forumList" status="status">	
         <tr class="TableDetail1 demodata_record">
 				<td>${name }&nbsp;</td>
 				<td>${description }&nbsp;</td>
 				<td><s:a action="forumManage_delete?id=%{id}" onclick="return delConfirm()">删除</s:a>
 					<s:a action="forumManage_editUI?id=%{id}">修改</s:a>
-					<s:a action="forumManage_moveUp?id=%{id}">上移</s:a>
-					<s:a action="forumManage_moveDown?id=%{id}">下移</s:a>
+					<s:if test="#status.first">
+						<span class="disabled">上移</span>
+					</s:if>
+					<s:else>
+						<s:a action="forumManage_moveUp?id=%{id}">上移</s:a>
+					</s:else>
+					<s:if test="#status.last">
+						<span class="disabled">下移</span>
+					</s:if>
+					<s:else>
+						<s:a action="forumManage_moveDown?id=%{id}">下移</s:a>
+					</s:else>
 				</td>
 		</tr>
 		</s:iterator>

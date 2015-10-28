@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <html><head>
-	<title>【常见问题】中的主题列表</title>
+	<title>【${forum.name }】中的主题列表</title>
     <%@ include file="/WEB-INF/jsp/public/commons.jspf" %>
 </head>
 <body>
@@ -11,7 +11,7 @@
     <div id="Title_bar_Head">
         <div id="Title_Head"></div>
         <div id="Title"><!--页面标题-->
-            <img src="${pageContext.request.contextPath }/style/images/title_arrow.gif" border="0" height="13" width="13"> 【常见问题】中的主题列表
+            <img src="${pageContext.request.contextPath }/style/images/title_arrow.gif" border="0" height="13" width="13"> 【${forum.name }】中的主题列表
         </div>
         <div id="Title_End"></div>
     </div>
@@ -22,11 +22,11 @@
 	<center>
 		<div class="ItemBlock_Title1" style="width: 98%;">
 			<font class="MenuPoint"> &gt; </font>
-			<a href="forumList.html">论坛</a>
+			<s:a action="forum_list">论坛</s:a>
 			<font class="MenuPoint"> &gt; </font>
-			销售常见问题
-			<span style="margin-left:30px;"><a href="${pageContext.request.contextPath }/BBS_Topic/saveUI.html">
-				<img src="${pageContext.request.contextPath }/style/blue/images/button/publishNewTopic.png" align="absmiddle"></a>
+			${forum.name }
+			<span style="margin-left:30px;"><s:a action="topic_addUI?forumId=%{#forum.id}">
+				<img src="${pageContext.request.contextPath }/style/blue/images/button/publishNewTopic.png" align="absmiddle"></s:a>
 			</span>
 		</div>
 		
@@ -50,99 +50,30 @@
 				<tr height="3"><td colspan="8"></td></tr>
 					
 				<!--主题列表-->
-				</tbody><tbody class="dataContainer" datakey="topicList">
-					
+				</tbody>
+				<tbody class="dataContainer" datakey="topicList">
+					<s:iterator value="#topicList">
 					<tr class="demodata_record" id="d0" height="35">
 						<td></td>
-						<td class="ForumTopicPageDataLine" align="center"><img src="${pageContext.request.contextPath }/style/images/topicType_2.gif"></td>
-						<td class="Topic"><a class="Default" href="${pageContext.request.contextPath }/BBS_Topic/topicShow.html">项目管理</a></td>
+						<td class="ForumTopicPageDataLine" align="center"><img src="${pageContext.request.contextPath }/style/images/topicType_${type }.gif"></td>
+						<td class="Topic"><s:a cssClass="Default" action="topic_show?id=%{id}">${title }</s:a></td>
 						<td class="ForumTopicPageDataLine">
 							<ul class="ForumPageTopicUl">
-								<li class="Author">管理员</li>
-								<li class="CreateTime">2010-06-12 18:18</li>
+								<li class="Author">${author.name }</li>
+								<li class="CreateTime">${postTime }</li>
 							</ul>
 						</td>
-						<td class="ForumTopicPageDataLine Reply" align="center"><b>35</b></td>
+						<td class="ForumTopicPageDataLine Reply" align="center"><b>${replyCount }</b></td>
 						<td class="ForumTopicPageDataLine">
 							<ul class="ForumPageTopicUl">
-								<li class="Author">user</li>
-								<li class="CreateTime">2010-06-12 18:24</li>
-							</ul>
-						</td>
-						<td></td>
-					</tr><tr class="demodata_record" id="d0" height="35">
-						<td></td>
-						<td class="ForumTopicPageDataLine" align="center"><img src="${pageContext.request.contextPath }/style/images/topicType_0.gif"></td>
-						<td class="Topic"><a class="Default" href="${pageContext.request.contextPath }/BBS_Topic/topicShow.html">审批流转是干什么用的？ </a></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">管理员</li>
-								<li class="CreateTime">2010-06-12 18:18</li>
-							</ul>
-						</td>
-						<td class="ForumTopicPageDataLine Reply" align="center"><b>33</b></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">user</li>
-								<li class="CreateTime">2010-06-12 18:24</li>
+								<li class="Author">${lastReply.author.name }</li>
+								<li class="CreateTime">${lastReply.postTime }</li>
 							</ul>
 						</td>
 						<td></td>
-					</tr><tr class="demodata_record" id="d0" height="35">
-						<td></td>
-						<td class="ForumTopicPageDataLine" align="center"><img src="${pageContext.request.contextPath }/style/images/topicType_1.gif"></td>
-						<td class="Topic"><a class="Default" href="${pageContext.request.contextPath }/BBS_Topic/topicShow.html">FAQ</a></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">管理员</li>
-								<li class="CreateTime">2010-06-12 18:18</li>
-							</ul>
-						</td>
-						<td class="ForumTopicPageDataLine Reply" align="center"><b>75</b></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">user</li>
-								<li class="CreateTime">2010-06-12 18:24</li>
-							</ul>
-						</td>
-						<td></td>
-					</tr><tr class="demodata_record" id="d0" height="35">
-						<td></td>
-						<td class="ForumTopicPageDataLine" align="center"><img src="${pageContext.request.contextPath }/style/images/topicType_0.gif"></td>
-						<td class="Topic"><a class="Default" href="${pageContext.request.contextPath }/BBS_Topic/topicShow.html">我的邮箱为什么不能正常使用？</a></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">管理员</li>
-								<li class="CreateTime">2010-06-12 18:18</li>
-							</ul>
-						</td>
-						<td class="ForumTopicPageDataLine Reply" align="center"><b>998</b></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">user</li>
-								<li class="CreateTime">2010-06-12 18:24</li>
-							</ul>
-						</td>
-						<td></td>
-					</tr><tr class="demodata_record" id="d0" height="35">
-						<td></td>
-						<td class="ForumTopicPageDataLine" align="center"><img src="${pageContext.request.contextPath }/style/images/topicType_0.gif"></td>
-						<td class="Topic"><a class="Default" href="${pageContext.request.contextPath }/BBS_Topic/topicShow.html">流程类别是干什么用的？</a></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">管理员</li>
-								<li class="CreateTime">2010-06-12 18:18</li>
-							</ul>
-						</td>
-						<td class="ForumTopicPageDataLine Reply" align="center"><b>17</b></td>
-						<td class="ForumTopicPageDataLine">
-							<ul class="ForumPageTopicUl">
-								<li class="Author">user</li>
-								<li class="CreateTime">2010-06-12 18:24</li>
-							</ul>
-						</td>
-						<td></td>
-					</tr></tbody>
+					</tr>
+					</s:iterator>
+				</tbody>
 					<!--主题列表结束-->	
 						
 					<tbody><tr height="3"><td colspan="9"></td></tr>

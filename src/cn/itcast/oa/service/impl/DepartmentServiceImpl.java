@@ -27,7 +27,10 @@ public class DepartmentServiceImpl extends DaoSupportImpl<Department> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Department> findTopList() {
-		return sessionFactory.getCurrentSession().createQuery("FROM Department d WHERE d.parent IS NULL").list();
+		// 之前的方式，注入sessionFactory，sessionFactory的实例只有一个
+//		return sessionFactory.getCurrentSession().createQuery("FROM Department d WHERE d.parent IS NULL").list();
+		// 现在的方式，因为父类DaoSupportImpl中已经注入了sessionFactory已经注入了，和当前类中注入的sessionFactory是一个实例
+		return getSession().createQuery("FROM Department d WHERE d.parent IS NULL").list();
 	}
 
 	@SuppressWarnings("unchecked")

@@ -29,6 +29,11 @@ public abstract class DaoSupportImpl<T> implements DaoSupport<T> {
 		// this.type = pt.getActualTypeArguments()[0];
 		this.clazz = (Class<T>) pt.getActualTypeArguments()[0]; 
 		// System.out.println("当前的clazz：\t" + type);
+		/**
+		 * 每次启动tomcat都打印所有实体的这句话，是因为现在方案都是**ServiceImpl.java继承DaoSupportImpl
+		 * 并且所有的***ServiceImpl的bean通过@Service注解托管到Spring容器进行管理，就和直接在applicationContext.xml
+		 * 中通过<bean>元素声明一样
+		 */
 		System.out.println("DaoSupportImpl.DaoSupportImpl().clazz：\t" + clazz);
 	}
 

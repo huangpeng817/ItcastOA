@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.ActionContext;
 
 import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Forum;
+import cn.itcast.oa.domain.Topic;
 
 @Controller
 @Scope("prototype")
@@ -25,7 +26,12 @@ public class ForumAction extends BaseAction<Forum> {
 	
 	/** 显示单个板块（主题列表） */
 	public String show() throws Exception {
+		// 显示导航条 > 论坛 > 销售常见问题 中的数据
+		Forum forum = forumService.getById(model.getId());
+		ActionContext.getContext().put("forum", forum);
 		
+		List<Topic> topicList = topicService.findByForum(forum);
+		ActionContext.getContext().put("topicList", topicList);
 		return "show";
 	}
 

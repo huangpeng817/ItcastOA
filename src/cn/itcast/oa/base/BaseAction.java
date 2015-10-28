@@ -4,9 +4,11 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.annotation.Resource;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
+import cn.itcast.oa.domain.User;
 import cn.itcast.oa.service.DepartmentService;
 import cn.itcast.oa.service.ForumService;
 import cn.itcast.oa.service.PrivilegeService;
@@ -40,6 +42,13 @@ public abstract class BaseAction<T> extends ActionSupport implements ModelDriven
 		return model;
 	}
 	
+	/**
+	 * 获取当前登录用户
+	 * @return
+	 */
+	protected User getCurrentUser() {
+		return (User) ActionContext.getContext().getSession().get("user");
+	}
 	
 	// ********************* Service实例的声明 *********************
 	@Resource

@@ -41,7 +41,7 @@ public class TopicAction extends BaseAction<Topic> {
 		// > 当前直接获取的信息
 		model.setAuthor(this.getCurrentUser()); // 当前登录用户
 		model.setIpAddr(ServletActionContext.getRequest().getRemoteAddr()); // 当前请求的IP(Servlet中的方法)
-		System.out.println("当前IP: " + ServletActionContext.getRequest().getRemoteAddr());
+		System.out.println(ServletActionContext.getRequest().getRemoteAddr());
 		model.setPostTime(new Date()); // 当前时间
 		
 		topicService.save(model);

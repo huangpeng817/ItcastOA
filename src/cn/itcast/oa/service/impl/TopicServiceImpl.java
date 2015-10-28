@@ -20,7 +20,7 @@ public class TopicServiceImpl extends DaoSupportImpl<Topic>implements TopicServi
 		// TODO 怎么排序？
 		return getSession()
 				.createQuery( //
-						"FROM Topic t WHERE t.forum=? ORDER BY t.type DESC, t.lastUpdateTime DESC") //
+						"FROM Topic t WHERE t.forum=? ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC") //
 				.setParameter(0, forum) //
 				.list();
 	}

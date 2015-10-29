@@ -1,6 +1,7 @@
 package cn.itcast.oa.view.action;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +11,7 @@ import com.opensymphony.xwork2.ActionContext;
 
 import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Forum;
+import cn.itcast.oa.domain.Reply;
 import cn.itcast.oa.domain.Topic;
 
 @Controller
@@ -21,6 +23,12 @@ public class TopicAction extends BaseAction<Topic> {
 	
 	/** 显示单个主题（主贴+回帖列表） */
 	public String show() throws Exception {
+		Topic topic = topicService.getById(model.getId());
+		ActionContext.getContext().put("topic", topic);
+		
+		List<Reply> replyList = replyService.findByTopic(topic);
+		ActionContext.getContext().put("replyList", replyList);
+		
 		return "show";
 	}
 	

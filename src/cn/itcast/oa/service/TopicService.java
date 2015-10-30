@@ -5,6 +5,7 @@ import java.util.List;
 import cn.itcast.oa.base.DaoSupport;
 import cn.itcast.oa.domain.Forum;
 import cn.itcast.oa.domain.Topic;
+import cn.itcast.oa.util.PageBean;
 
 public interface TopicService extends DaoSupport<Topic> {
 
@@ -13,6 +14,16 @@ public interface TopicService extends DaoSupport<Topic> {
 	 * @param forum
 	 * @return
 	 */
+	@Deprecated
 	List<Topic> findByForum(Forum forum);
+
+	/**
+	 * 查询分页信息
+	 * @param pageNum
+	 * @param pageSize
+	 * @param forum
+	 * @return
+	 */
+	PageBean getPageBeanByForum(int pageNum, int pageSize, Forum forum);
 
 }

@@ -50,6 +50,27 @@ public abstract class BaseAction<T> extends ActionSupport implements ModelDriven
 		return (User) ActionContext.getContext().getSession().get("user");
 	}
 	
+	// ================ 分页用的参数 ================
+	// 分页需要封装页面获取的参数
+	protected int pageNum = 1; // 当前页，PageBean中的currentPage
+	protected int pageSize = 10; // 每页显示的记录条数
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	
 	// ********************* Service实例的声明 *********************
 	@Resource
 	protected DepartmentService departmentService;

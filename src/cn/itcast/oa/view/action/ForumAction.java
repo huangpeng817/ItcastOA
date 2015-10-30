@@ -10,6 +10,7 @@ import com.opensymphony.xwork2.ActionContext;
 import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Forum;
 import cn.itcast.oa.domain.Topic;
+import cn.itcast.oa.util.PageBean;
 
 @Controller
 @Scope("prototype")
@@ -30,8 +31,13 @@ public class ForumAction extends BaseAction<Forum> {
 		Forum forum = forumService.getById(model.getId());
 		ActionContext.getContext().put("forum", forum);
 		
-		List<Topic> topicList = topicService.findByForum(forum);
-		ActionContext.getContext().put("topicList", topicList);
+//		List<Topic> topicList = topicService.findByForum(forum);
+//		ActionContext.getContext().put("topicList", topicList);
+		
+		// 准备分页信息
+		PageBean pageBean = topicService.getPageBeanByForum(pageNum, pageSize, forum);
+		ActionContext.getContext().getValueStack().push(pageBean);
+		
 		return "show";
 	}
 

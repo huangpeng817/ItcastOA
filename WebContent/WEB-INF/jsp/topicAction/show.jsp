@@ -69,6 +69,7 @@
 			</table>
 
 			<!-- ~~~~~~~~~~~~~~~ 显示主帖（主帖只在第1页显示） ~~~~~~~~~~~~~~~ -->
+			<s:if test="%{currentPage==1}">
 			<div class="ListArea">
 				<table border="0" cellpadding="0" cellspacing="1" width="100%">
 					<tr>
@@ -114,11 +115,12 @@
 					</tr>
 				</table>
 			</div>
+			</s:if>
 			<!-- ~~~~~~~~~~~~~~~ 显示主帖结束 ~~~~~~~~~~~~~~~ -->
 
 
 			<!-- ~~~~~~~~~~~~~~~ 显示回复列表 ~~~~~~~~~~~~~~~ -->
-			<s:iterator value="#replyList" status="status">
+			<s:iterator value="recordList" status="status">
 			<div class="ListArea template">
 				<table border="0" cellpadding="0" cellspacing="1" width="100%">
 					<tr>
@@ -153,7 +155,7 @@
 					<tr><!--显示楼层等信息-->
 						<td class="Footer" height="28" align="center" valign="bottom">
 							<ul style="margin: 0px; width: 98%;">
-								<li style="float: left; line-height:18px;"><font color=#C30000>[${status.count}楼]</font>
+								<li style="float: left; line-height:18px;"><font color=#C30000>[${(currentPage - 1) * pageSize + status.count}楼]</font>
 									${postTime}
 								</li>
 								<li style="float: right;"><a href="javascript:scroll(0,0)">
@@ -171,36 +173,47 @@
 		<!--分页信息-->
 		<div id=PageSelectorBar>
 			<div id=PageSelectorMemo>
-				页次：7/13页 &nbsp;
-				每页显示：30条 &nbsp;
-				总记录数：385条
+				页次：${currentPage }/${pageCount }页 &nbsp;
+				每页显示：${pageSize }条 &nbsp;
+				总记录数：${recordCount }条
 			</div>
 			<div id=PageSelectorSelectorArea>
 			
-				<a href="javascript:void(0)" title="首页" style="cursor: hand;">
+				<a href="javascript:gotoPage(1)" title="首页" style="cursor: hand;">
 					<img src="${pageContext.request.contextPath}/style/blue/images/pageSelector/firstPage.png"/>
 				</a>
+				<s:iterator begin="%{beginPageIndex }" end="%{endPageIndex}" var="num"> <!-- 此处的变量都是放在map中的 -->
+				<!-- 当前页 -->
+				<s:if test="%{currentPage == #num}">
+					<span class="PageSelectorNum PageSelectorSelected">${num }</span>
+				</s:if>
+				<!-- 非当前页 -->
+				<s:else>
+					<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(${num});">${num }</span>
+				</s:else>
+				</s:iterator>
 				
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">3</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">4</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">5</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">6</span>
-				<span class="PageSelectorNum PageSelectorSelected">7</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">8</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">9</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">10</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">11</span>
-				<span class="PageSelectorNum" style="cursor: hand;" onClick="gotoPage(2);">12</span>
-				
-				<a href="#" title="尾页" style="cursor: hand;">
+				<a href="javascript:gotoPage(${pageCount })" title="尾页" style="cursor: hand;">
 					<img src="${pageContext.request.contextPath}/style/blue/images/pageSelector/lastPage.png"/>
 				</a>
 				
 				转到：
-				<input onFocus="this.select();" maxlength="3" class="inputStyle" type="text" value="1" id="pn"/>
-				<input type="submit" value="Go" class="MiddleButtonStyle" />
+				<select onchange="gotoPage(this.value)" id="_pn">
+					<s:iterator begin="1" end="%{pageCount }" var="toPage">
+						<option value="${toPage }">${toPage }</option>
+					</s:iterator>
+				</select>
+				<script type="text/javascript">
+					$("#_pn").val("${currentPage}");
+				</script>
 			</div>
 		</div>
+		
+		<script type="text/javascript">
+			function gotoPage(pageNum) {
+				window.location.href = "topic_show.action?id=${id}&pageNum=" + pageNum;
+			}
+		</script>
 
 		<div class="ForumPageTableBorder" style="margin-top: 25px;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">

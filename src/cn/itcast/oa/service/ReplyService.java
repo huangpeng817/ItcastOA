@@ -5,6 +5,7 @@ import java.util.List;
 import cn.itcast.oa.base.DaoSupport;
 import cn.itcast.oa.domain.Reply;
 import cn.itcast.oa.domain.Topic;
+import cn.itcast.oa.util.PageBean;
 
 public interface ReplyService extends DaoSupport<Reply> {
 
@@ -14,5 +15,14 @@ public interface ReplyService extends DaoSupport<Reply> {
 	 * @return
 	 */
 	List<Reply> findByTopic(Topic topic);
+
+	/**
+	 * 查询分页信息
+	 * @param pageNum
+	 * @param pageSize
+	 * @param topic
+	 * @return
+	 */
+	PageBean getPageBeanByTopic(int pageNum, int pageSize, Topic topic);
 
 }

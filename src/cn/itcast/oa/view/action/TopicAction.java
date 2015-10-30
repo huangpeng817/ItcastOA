@@ -13,6 +13,7 @@ import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Forum;
 import cn.itcast.oa.domain.Reply;
 import cn.itcast.oa.domain.Topic;
+import cn.itcast.oa.util.PageBean;
 
 @Controller
 @Scope("prototype")
@@ -21,13 +22,21 @@ public class TopicAction extends BaseAction<Topic> {
 	private static final long serialVersionUID = 5988876514465199171L;
 	private Long forumId;
 	
+	// 分页需要封装页面获取的参数
+	private int pageNum = 1; // 当前页，PageBean中的currentPage
+	private int pageSize = 10; // 每页显示的记录条数
+	
 	/** 显示单个主题（主贴+回帖列表） */
 	public String show() throws Exception {
 		Topic topic = topicService.getById(model.getId());
 		ActionContext.getContext().put("topic", topic);
 		
-		List<Reply> replyList = replyService.findByTopic(topic);
-		ActionContext.getContext().put("replyList", replyList);
+//		List<Reply> replyList = replyService.findByTopic(topic);
+//		ActionContext.getContext().put("replyList", replyList);
+		
+		// 准备分页信息
+		PageBean pageBean = replyService.getPageBeanByTopic(pageNum, pageSize, topic);
+		ActionContext.getContext().getValueStack().push(pageBean);
 		
 		return "show";
 	}
@@ -64,6 +73,22 @@ public class TopicAction extends BaseAction<Topic> {
 
 	public void setForumId(Long forumId) {
 		this.forumId = forumId;
+	}
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 
 }

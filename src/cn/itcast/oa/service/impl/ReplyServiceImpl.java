@@ -18,6 +18,7 @@ import cn.itcast.oa.util.PageBean;
 public class ReplyServiceImpl extends DaoSupportImpl<Reply> implements ReplyService {
 
 	@Override
+	@Deprecated
 	public List<Reply> findByTopic(Topic topic) {
 		return getSession().createQuery( //
 				"FROM Reply r WHERE r.topic = ? ORDER BY r.postTime ASC") //
@@ -47,6 +48,7 @@ public class ReplyServiceImpl extends DaoSupportImpl<Reply> implements ReplyServ
 	}
 
 	@Override
+	@Deprecated
 	public PageBean getPageBeanByTopic(int pageNum, int pageSize, Topic topic) {
 		
 		// 查询列表

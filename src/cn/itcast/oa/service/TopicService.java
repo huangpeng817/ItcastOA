@@ -24,6 +24,7 @@ public interface TopicService extends DaoSupport<Topic> {
 	 * @param forum
 	 * @return
 	 */
+	@Deprecated
 	PageBean getPageBeanByForum(int pageNum, int pageSize, Forum forum);
 
 }

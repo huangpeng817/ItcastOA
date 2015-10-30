@@ -1,5 +1,6 @@
 package cn.itcast.oa.view.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
@@ -34,8 +35,15 @@ public class ForumAction extends BaseAction<Forum> {
 //		List<Topic> topicList = topicService.findByForum(forum);
 //		ActionContext.getContext().put("topicList", topicList);
 		
-		// 准备分页信息
-		PageBean pageBean = topicService.getPageBeanByForum(pageNum, pageSize, forum);
+//		// 准备分页信息v1
+//		PageBean pageBean = topicService.getPageBeanByForum(pageNum, pageSize, forum);
+//		ActionContext.getContext().getValueStack().push(pageBean);
+		
+		// 准备分页信息v2
+		String hql = "FROM Topic t WHERE t.forum=? ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC";
+		List<Object> parameters = new ArrayList<Object>();
+		parameters.add(forum);
+		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
 		ActionContext.getContext().getValueStack().push(pageBean);
 		
 		return "show";

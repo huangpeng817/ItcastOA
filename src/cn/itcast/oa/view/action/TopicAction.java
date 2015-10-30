@@ -1,5 +1,6 @@
 package cn.itcast.oa.view.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +31,15 @@ public class TopicAction extends BaseAction<Topic> {
 //		List<Reply> replyList = replyService.findByTopic(topic);
 //		ActionContext.getContext().put("replyList", replyList);
 		
-		// 准备分页信息
-		PageBean pageBean = replyService.getPageBeanByTopic(pageNum, pageSize, topic);
+//		// 准备分页信息 v1
+//		PageBean pageBean = replyService.getPageBeanByTopic(pageNum, pageSize, topic);
+//		ActionContext.getContext().getValueStack().push(pageBean);
+		
+		// 准备分页信息 v2
+		String hql = "FROM Reply r WHERE r.topic = ? ORDER BY r.postTime ASC";
+		List<Object> parameters = new ArrayList<Object>();
+		parameters.add(topic);
+		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
 		ActionContext.getContext().getValueStack().push(pageBean);
 		
 		return "show";

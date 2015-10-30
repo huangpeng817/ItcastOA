@@ -47,6 +47,7 @@ public class TopicServiceImpl extends DaoSupportImpl<Topic>implements TopicServi
 	}
 
 	@Override
+	@Deprecated
 	public PageBean getPageBeanByForum(int pageNum, int pageSize, Forum forum) {
 		
 		// 查询本页的数据列表

@@ -14,6 +14,7 @@ public interface ReplyService extends DaoSupport<Reply> {
 	 * @param topic
 	 * @return
 	 */
+	@Deprecated
 	List<Reply> findByTopic(Topic topic);
 
 	/**
@@ -23,6 +24,7 @@ public interface ReplyService extends DaoSupport<Reply> {
 	 * @param topic
 	 * @return
 	 */
+	@Deprecated
 	PageBean getPageBeanByTopic(int pageNum, int pageSize, Topic topic);
 
 }

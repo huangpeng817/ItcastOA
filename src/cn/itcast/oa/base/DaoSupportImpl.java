@@ -7,9 +7,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import cn.itcast.oa.util.PageBean;
 
 //添加对删改的事务处理，让session处于事物的管理下
 @Transactional
@@ -88,4 +91,33 @@ public abstract class DaoSupportImpl<T> implements DaoSupport<T> {
 		return getSession().createQuery("FROM " + clazz.getSimpleName()).list();
 	}
 
+	// 公共的查询分页信息的方法
+	@Override
+	public PageBean getPageBean(int pageNum, int pageSize, String hql, List<Object> parameters) {
+		
+		// 查询本页的数据列表
+		Query listQuery = getSession().createQuery(hql); // 创建查询对象
+		if (parameters != null) { // 设置参数
+			for (int i = 0; i < parameters.size(); i++) {
+				listQuery.setParameter(i, parameters.get(i));
+			}
+		}
+		listQuery.setFirstResult((pageNum - 1) * pageSize);
+		listQuery.setMaxResults(pageSize);
+		List list = listQuery.list(); // 执行查询
+		
+		// 查询总记录条数
+		Query countQuery = getSession().createQuery("SELECT COUNT(*)" + hql);
+		if (parameters != null) {
+			int index = 0;
+			for (Object object : parameters) {
+				countQuery.setParameter(index, object);
+				index = index + 1;
+			}
+		}
+		Long recordCount = (Long) countQuery.uniqueResult();
+		
+		return new PageBean(pageNum, pageSize, recordCount.intValue(), list);
+	}
+	
 }

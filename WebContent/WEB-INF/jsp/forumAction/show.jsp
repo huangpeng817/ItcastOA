@@ -118,13 +118,7 @@
 
 <!--分页信息-->
 <%@include file="/WEB-INF/jsp/public/pageView.jspf" %>
-
-<script type="text/javascript">
-	
-	function gotoPage(pageNum) {
-		window.location.href = "forum_show.action?id=${id}&pageNum=" + pageNum;
-	}
-</script>
+<s:form action="forum_show?id=%{id}"></s:form>
 
 <div class="Description">
 	说明：<br>

@@ -34,7 +34,7 @@
         
         <!--显示数据列表-->
         <tbody id="TableData" class="dataContainer" datakey="userList">
-        <s:iterator value="%{#userList}" var="user">   
+        <s:iterator value="recordList" var="user">   
         <tr class="TableDetail1 demodata_record">
                 <td>${user.loginName }&nbsp;</td>
                 <td>${user.name }&nbsp;</td>
@@ -62,6 +62,8 @@
     </div>
 </div>
 
-
+<!-- 分页信息 -->
+<%@ include file="/WEB-INF/jsp/public/pageView.jspf" %>
+<s:form action="user_list"></s:form>
 
 </body></html>

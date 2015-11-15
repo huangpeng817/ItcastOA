@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.itcast.oa.util.PageBean;
+import cn.itcast.oa.util.QueryHelper;
 
 //添加对删改的事务处理，让session处于事物的管理下
 @Transactional
@@ -92,6 +93,7 @@ public abstract class DaoSupportImpl<T> implements DaoSupport<T> {
 	}
 
 	// 公共的查询分页信息的方法
+	@Deprecated
 	@Override
 	public PageBean getPageBean(int pageNum, int pageSize, String hql, List<Object> parameters) {
 		
@@ -108,6 +110,40 @@ public abstract class DaoSupportImpl<T> implements DaoSupport<T> {
 		
 		// 查询总记录条数
 		Query countQuery = getSession().createQuery("SELECT COUNT(*)" + hql);
+		if (parameters != null) {
+			int index = 0;
+			for (Object object : parameters) {
+				countQuery.setParameter(index, object);
+				index = index + 1;
+			}
+		}
+		Long recordCount = (Long) countQuery.uniqueResult();
+		
+		return new PageBean(pageNum, pageSize, recordCount.intValue(), list);
+	}
+
+	// 公共的查询分页信息的方法(最终版)
+	@Override
+	public PageBean getPageBean(int pageNum, int pageSize, QueryHelper queryHelper) {
+		
+		System.out.println("---------------->DaoSupportImpl.getPageBean(int pageNum, int pageSize, QueryHelper queryHelper)");
+		
+		// 参数列表
+		List<Object> parameters = queryHelper.getParameters();
+		
+		// 查询本页的数据列表
+		Query listQuery = getSession().createQuery(queryHelper.getListQueryHql()); // 创建查询对象
+		if (parameters != null) { // 设置参数
+			for (int i = 0; i < parameters.size(); i++) {
+				listQuery.setParameter(i, parameters.get(i));
+			}
+		}
+		listQuery.setFirstResult((pageNum - 1) * pageSize);
+		listQuery.setMaxResults(pageSize);
+		List list = listQuery.list(); // 执行查询
+		
+		// 查询总记录条数
+		Query countQuery = getSession().createQuery(queryHelper.getCountQueryHql());
 		if (parameters != null) {
 			int index = 0;
 			for (Object object : parameters) {

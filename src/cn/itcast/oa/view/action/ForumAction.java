@@ -12,6 +12,7 @@ import cn.itcast.oa.base.BaseAction;
 import cn.itcast.oa.domain.Forum;
 import cn.itcast.oa.domain.Topic;
 import cn.itcast.oa.util.PageBean;
+import cn.itcast.oa.util.QueryHelper;
 
 @Controller
 @Scope("prototype")
@@ -65,34 +66,42 @@ public class ForumAction extends BaseAction<Forum> {
 //		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
 //		ActionContext.getContext().getValueStack().push(pageBean);
 		
-		// 准备分页信息v3
-		String hql = "FROM Topic t WHERE t.forum=? ";
-		List<Object> parameters = new ArrayList<Object>();
-		parameters.add(forum);
+//		// 准备分页信息v3
+//		String hql = "FROM Topic t WHERE t.forum=? ";
+//		List<Object> parameters = new ArrayList<Object>();
+//		parameters.add(forum);
+//		
+//		if (viewType == 1) { // 1 只看精华帖
+//			hql += " AND t.type=? ";
+//			parameters.add(Topic.TYPE_BEST);
+//		}
+//		
+//		if (orderBy == 1) { // 1 按最后更新时间排序 
+//			hql += " ORDER BY t.lastUpdateTime " + (asc ? "ASC" : "DESC");
+//		} else if (orderBy == 2) { // 2 按主题发表时间排序   
+//			hql += " ORDER BY t.postTime " + (asc ? "ASC" : "DESC");
+//		} else if (orderBy == 3) { // 3 按回复数量排序            
+//			hql += " ORDER BY t.replyCount " + (asc ? "ASC" : "DESC");
+//		} else { // 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）
+//			hql += " ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC";
+//		}
+//		
+//		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
+//		ActionContext.getContext().getValueStack().push(pageBean);
 		
-		if (viewType == 1) { // 1 只看精华帖
-			hql += " AND t.type=? ";
-			parameters.add(Topic.TYPE_BEST);
-		}
-		
-		/**
-		 * 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）                                 
-		 * 1 按最后更新时间排序                                                  
-		 * 2 按主题发表时间排序                                                  
-		 * 3 按回复数量排序                                                    
-		 */
-		if (orderBy == 1) { // 1 按最后更新时间排序 
-			hql += " ORDER BY t.lastUpdateTime " + (asc ? "ASC" : "DESC");
-		} else if (orderBy == 2) { // 2 按主题发表时间排序   
-			hql += " ORDER BY t.postTime " + (asc ? "ASC" : "DESC");
-		} else if (orderBy == 3) { // 3 按回复数量排序            
-			hql += " ORDER BY t.replyCount " + (asc ? "ASC" : "DESC");
-		} else { // 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）
-			hql += " ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC";
-		}
-		
-		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
-		ActionContext.getContext().getValueStack().push(pageBean);
+		// 准备分页信息, 最终版
+		new QueryHelper(Topic.class, "t") // 
+				// 过滤条件
+				.addCondition("t.forum=?", forum) //
+				.addCondition((viewType == 1), "t.type=?", Topic.TYPE_BEST) // 1 只看精华帖
+				// 排序条件
+				.addOrderProperty((orderBy == 1), "t.lastUpdateTime", asc) // 1 按最后更新时间排序
+				.addOrderProperty((orderBy == 2), "t.postTime", asc)// 2 按主题发表时间排序
+				.addOrderProperty((orderBy == 3), "t.replyCount", asc)// 3 按回复数量排序
+				.addOrderProperty((orderBy == 0), "(CASE t.type WHEN 2 THEN 2 ELSE 0 END)", false)// 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）
+				.addOrderProperty((orderBy == 0), "t.lastUpdateTime", false) //
+				.preparePageBean(topicService, pageNum, pageSize)
+		;
 		
 		return "show";
 	}

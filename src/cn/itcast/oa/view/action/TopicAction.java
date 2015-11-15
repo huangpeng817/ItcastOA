@@ -15,6 +15,7 @@ import cn.itcast.oa.domain.Forum;
 import cn.itcast.oa.domain.Reply;
 import cn.itcast.oa.domain.Topic;
 import cn.itcast.oa.util.PageBean;
+import cn.itcast.oa.util.QueryHelper;
 
 @Controller
 @Scope("prototype")
@@ -35,12 +36,19 @@ public class TopicAction extends BaseAction<Topic> {
 //		PageBean pageBean = replyService.getPageBeanByTopic(pageNum, pageSize, topic);
 //		ActionContext.getContext().getValueStack().push(pageBean);
 		
-		// 准备分页信息 v2
-		String hql = "FROM Reply r WHERE r.topic = ? ORDER BY r.postTime ASC";
-		List<Object> parameters = new ArrayList<Object>();
-		parameters.add(topic);
-		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
-		ActionContext.getContext().getValueStack().push(pageBean);
+//		// 准备分页信息 v2
+//		String hql = "FROM Reply r WHERE r.topic = ? ORDER BY r.postTime ASC";
+//		List<Object> parameters = new ArrayList<Object>();
+//		parameters.add(topic);
+//		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
+//		ActionContext.getContext().getValueStack().push(pageBean);
+		
+		// 准备分页信息，最终版
+		new QueryHelper(Reply.class, "r") //
+				.addCondition("r.topic=?", topic) //
+				.addOrderProperty("r.postTime", true) //
+				.preparePageBean(replyService, pageNum, pageSize)
+		;
 		
 		return "show";
 	}

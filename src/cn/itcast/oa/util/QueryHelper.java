@@ -25,12 +25,12 @@ public class QueryHelper {
 	 * @param condition
 	 * @param params
 	 */
-	public void addCondition(String condition, Object... params) {
+	public QueryHelper addCondition(String condition, Object... params) {
 		// 拼接
 		if (whereClause.length() == 0) {
 			whereClause = " WHERE " + condition;
 		} else {
-			whereClause = " AND " + condition;
+			whereClause += " AND " + condition;
 		}
 		
 		// 参数
@@ -39,6 +39,20 @@ public class QueryHelper {
 				parameters.add(param);
 			}
 		}
+		return this;
+	}
+	
+	/**
+	 * 如果第一个参数append为true,则拼接Where子句
+	 * @param append
+	 * @param condition
+	 * @param params
+	 */
+	public QueryHelper addCondition(boolean append, String condition, Object... params) {
+		if (append) {
+			addCondition(condition, params);
+		}
+		return this;
 	}
 	
 	/**
@@ -48,12 +62,26 @@ public class QueryHelper {
 	 * @param asc
 	 * 			true表示升序，false表示降序
 	 */
-	public void addOrderProperty(String propertyName, boolean asc) {
+	public QueryHelper addOrderProperty(String propertyName, boolean asc) {
 		if (orderByClause.length() == 0) {
-			orderByClause = " ORDER BY " + propertyName + (asc ? "ASC" : "DESC");
+			orderByClause = " ORDER BY " + propertyName + (asc ? " ASC" : " DESC");
 		} else {
-			orderByClause += ", " + propertyName + (asc ? "ASC" : "DESC");
+			orderByClause += ", " + propertyName + (asc ? " ASC" : " DESC");
 		}
+		return this;
+	}
+	
+	/**
+	 * 如果第一个参数append为true,则拼接order by子句
+	 * @param append
+	 * @param propertyName
+	 * @param asc
+	 */
+	public QueryHelper addOrderProperty(boolean append, String propertyName, boolean asc) {
+		if (append) {
+			addOrderProperty(propertyName, asc);
+		}
+		return this;
 	}
 	
 	/**
@@ -69,7 +97,7 @@ public class QueryHelper {
 	 * @return
 	 */
 	public String getCountQueryHql() {
-		return "SELECT COUNT(*) " + whereClause + orderByClause;
+		return "SELECT COUNT(*) " + fromClause + whereClause;
 	}
 	
 	/**

@@ -19,6 +19,25 @@ public class ForumAction extends BaseAction<Forum> {
 
 	private static final long serialVersionUID = 5519080617926673475L;
 	
+	/**
+	 * 0 全部主题
+	 * 1 全部精华贴
+	 */
+	private int viewType = 0;
+	/**
+	 * 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）
+	 * 1 按最后更新时间排序                     
+	 * 2 按主题发表时间排序                   
+	 * 3 按回复数量排序                       
+	 */
+	private int orderBy = 0;
+	/**
+	 * false 降序
+	 * true 升序
+	 * 
+	 */
+	private boolean asc = false;
+	
 	/** 显示板块列表 */
 	public String list() throws Exception {
 		List<Forum> forumList = forumService.findAll();
@@ -39,14 +58,67 @@ public class ForumAction extends BaseAction<Forum> {
 //		PageBean pageBean = topicService.getPageBeanByForum(pageNum, pageSize, forum);
 //		ActionContext.getContext().getValueStack().push(pageBean);
 		
-		// 准备分页信息v2
-		String hql = "FROM Topic t WHERE t.forum=? ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC";
+//		// 准备分页信息v2
+//		String hql = "FROM Topic t WHERE t.forum=? ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC";
+//		List<Object> parameters = new ArrayList<Object>();
+//		parameters.add(forum);
+//		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
+//		ActionContext.getContext().getValueStack().push(pageBean);
+		
+		// 准备分页信息v3
+		String hql = "FROM Topic t WHERE t.forum=? ";
 		List<Object> parameters = new ArrayList<Object>();
 		parameters.add(forum);
+		
+		if (viewType == 1) { // 1 只看精华帖
+			hql += " AND t.type=? ";
+			parameters.add(Topic.TYPE_BEST);
+		}
+		
+		/**
+		 * 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）                                 
+		 * 1 按最后更新时间排序                                                  
+		 * 2 按主题发表时间排序                                                  
+		 * 3 按回复数量排序                                                    
+		 */
+		if (orderBy == 1) { // 1 按最后更新时间排序 
+			hql += " ORDER BY t.lastUpdateTime " + (asc ? "ASC" : "DESC");
+		} else if (orderBy == 2) { // 2 按主题发表时间排序   
+			hql += " ORDER BY t.postTime " + (asc ? "ASC" : "DESC");
+		} else if (orderBy == 3) { // 3 按回复数量排序            
+			hql += " ORDER BY t.replyCount " + (asc ? "ASC" : "DESC");
+		} else { // 0 默认排序（按最后更新时间排序，但所有置顶帖都在前面）
+			hql += " ORDER BY (CASE t.type WHEN 2 THEN 2 ELSE 0 END) DESC, t.lastUpdateTime DESC";
+		}
+		
 		PageBean pageBean = replyService.getPageBean(pageNum, pageSize, hql, parameters);
 		ActionContext.getContext().getValueStack().push(pageBean);
 		
 		return "show";
 	}
 
+	public int getViewType() {
+		return viewType;
+	}
+
+	public void setViewType(int viewType) {
+		this.viewType = viewType;
+	}
+
+	public int getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(int orderBy) {
+		this.orderBy = orderBy;
+	}
+
+	public boolean isAsc() {
+		return asc;
+	}
+
+	public void setAsc(boolean asc) {
+		this.asc = asc;
+	}
+	
 }
